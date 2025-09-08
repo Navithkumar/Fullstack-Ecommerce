@@ -11,15 +11,12 @@ services:
 
     user_backend:
         build: ./backend/user_backend
+        volumes:
+            - ./backend/user_backend:/app
         container_name: user_backend
         command: gunicorn user_backend.wsgi:application --bind 0.0.0.0:8000
         environment:
-            - DB_HOST=mysql
-            - DB_NAME=user_db
-            - DB_USER=root
-            - DB_PASSWORD=root
-            - REDIS_HOST=redis
-            - RABBITMQ_HOST=rabbitmq
+            - DB_NAME=${USER_DB}
         depends_on:
             - mysql
             - redis
@@ -30,15 +27,12 @@ services:
     # ---------- PRODUCT SERVICE ----------
     product_backend:
         build: ./backend/product_backend
+        volumes:
+            - ./backend/product_backend:/app
         container_name: product_backend
         command: gunicorn product_backend.wsgi:application --bind 0.0.0.0:8000
         environment:
-            - DB_HOST=mysql
-            - DB_NAME=product_db
-            - DB_USER=root
-            - DB_PASSWORD=root
-            - REDIS_HOST=redis
-            - RABBITMQ_HOST=rabbitmq
+            - DB_NAME=${USER_DB}
         depends_on:
             - mysql
             - redis
@@ -49,14 +43,12 @@ services:
     # ---------- ORDER SERVICE ----------
     order_backend:
         build: ./backend/order_backend
+        volumes:
+            - ./backend/order_backend:/app
         container_name: order_backend
         command: gunicorn order_backend.wsgi:application --bind 0.0.0.0:8000
         environment:
-            - DB_HOST=mysql
-            - DB_NAME=order_db
-            - DB_USER=root
-            - DB_PASSWORD=root
-            - RABBITMQ_HOST=rabbitmq
+            - DB_NAME=${USER_DB}
         depends_on:
             - mysql
             - rabbitmq
@@ -66,14 +58,12 @@ services:
     # ---------- PAYMENT SERVICE ----------
     payment_backend:
         build: ./backend/payment_backend
+        volumes:
+            - ./backend/payment_backend:/app
         container_name: payment_backend
         command: gunicorn payment_backend.wsgi:application --bind 0.0.0.0:8000
         environment:
-            - DB_HOST=mysql
-            - DB_NAME=payment_db
-            - DB_USER=root
-            - DB_PASSWORD=root
-            - RABBITMQ_HOST=rabbitmq
+            - DB_NAME=${USER_DB}
         depends_on:
             - mysql
             - rabbitmq
@@ -83,14 +73,12 @@ services:
     # ---------- Cart SERVICE ----------
     cart_backend:
         build: ./backend/cart_backend
+        volumes:
+            - ./backend/cart_backend:/app
         container_name: cart_backend
         command: gunicorn cart_backend.wsgi:application --bind 0.0.0.0:8000
         environment:
-            - DB_HOST=mysql
-            - DB_NAME=payment_db
-            - DB_USER=root
-            - DB_PASSWORD=root
-            - RABBITMQ_HOST=rabbitmq
+            - DB_NAME=${USER_DB}
         depends_on:
             - mysql
             - rabbitmq
