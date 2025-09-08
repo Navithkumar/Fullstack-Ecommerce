@@ -1,0 +1,33 @@
+# Core Django
+Django>=5.0,<6.0
+
+# Django REST Framework
+djangorestframework>=3.15.0
+
+# MySQL Database Connector
+mysqlclient>=2.2.4  # or use 'PyMySQL' if preferred
+
+# Redis for caching & sessions
+django-redis>=5.4.0
+redis>=5.0.0
+
+# Celery for async tasks (with RabbitMQ broker)
+celery>=5.3.6
+
+# For environment variable management
+python-decouple>=3.8
+
+# CORS handling (React frontend integration)
+django-cors-headers>=4.3.1
+
+# JWT Authentication (optional for APIs)
+djangorestframework-simplejwt>=5.3.1
+
+# For handling images & files
+Pillow>=10.2.0
+
+# API Documentation (Swagger)
+drf-yasg>=1.21.7
+
+# Optional: Django Filter for advanced querying
+django-filter>=24.1
