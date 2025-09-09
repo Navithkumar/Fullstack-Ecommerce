@@ -31,4 +31,7 @@ drf-yasg>=1.21.7
 
 # Optional: Django Filter for advanced querying
 django-filter>=24.1
+
 gunicorn>=21.2.0
+
+django-environ==0.12.0

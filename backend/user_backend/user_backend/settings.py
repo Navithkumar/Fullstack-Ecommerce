@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os 
+import environ
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -23,9 +24,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-8v@t$4dlg=yxu$voe+#ecs@k2l=jgnn)^xbzleu(86vw(u82o$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "nginx", "user_backend"]
+
+
 
 
 # Application definition
@@ -37,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "my_app"
 ]
 
 MIDDLEWARE = [
@@ -72,16 +76,22 @@ WSGI_APPLICATION = 'user_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+
+
+env = environ.Env()
+environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv("DB_NAME"),
-        'USER': 'root',
-        'PASSWORD': os.getenv("MYSQL_ROOT_PASSWORD"),
-        'HOST': os.getenv("MYSQL_HOST"),
-        'PORT': '3306',
+        'NAME': env("USER_DB"),
+        'USER': env("MYSQL_USER", default="root"),
+        'PASSWORD': env("MYSQL_ROOT_PASSWORD"),
+        'HOST': env("MYSQL_HOST", default="mysql"),
+        'PORT': env.int("DB_PORT", default=3306),
     }
 }
+
 
 
 # Password validation

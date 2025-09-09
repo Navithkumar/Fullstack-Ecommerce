@@ -8,15 +8,14 @@ services:
             - ecommerce
 
     # ---------- USER SERVICE ----------
-
     user_backend:
         build: ./backend/user_backend
         volumes:
             - ./backend/user_backend:/app
         container_name: user_backend
-        command: gunicorn user_backend.wsgi:application --bind 0.0.0.0:8000
-        environment:
-            - DB_NAME=${USER_DB}
+        command: python manage.py runserver 0.0.0.0:8000
+        env_file:
+            - .env
         depends_on:
             - mysql
             - redis
@@ -30,9 +29,9 @@ services:
         volumes:
             - ./backend/product_backend:/app
         container_name: product_backend
-        command: gunicorn product_backend.wsgi:application --bind 0.0.0.0:8000
-        environment:
-            - DB_NAME=${USER_DB}
+        command: python manage.py runserver 0.0.0.0:8000
+        env_file:
+            - .env
         depends_on:
             - mysql
             - redis
@@ -46,9 +45,9 @@ services:
         volumes:
             - ./backend/order_backend:/app
         container_name: order_backend
-        command: gunicorn order_backend.wsgi:application --bind 0.0.0.0:8000
-        environment:
-            - DB_NAME=${USER_DB}
+        command: python manage.py runserver 0.0.0.0:8000
+        env_file:
+            - .env
         depends_on:
             - mysql
             - rabbitmq
@@ -61,24 +60,24 @@ services:
         volumes:
             - ./backend/payment_backend:/app
         container_name: payment_backend
-        command: gunicorn payment_backend.wsgi:application --bind 0.0.0.0:8000
-        environment:
-            - DB_NAME=${USER_DB}
+        command: python manage.py runserver 0.0.0.0:8000
+        env_file:
+            - .env
         depends_on:
             - mysql
             - rabbitmq
         networks:
             - ecommerce
 
-    # ---------- Cart SERVICE ----------
+    # ---------- CART SERVICE ----------
     cart_backend:
         build: ./backend/cart_backend
         volumes:
             - ./backend/cart_backend:/app
         container_name: cart_backend
-        command: gunicorn cart_backend.wsgi:application --bind 0.0.0.0:8000
-        environment:
-            - DB_NAME=${USER_DB}
+        command: python manage.py runserver 0.0.0.0:8000
+        env_file:
+            - .env
         depends_on:
             - mysql
             - rabbitmq
@@ -91,11 +90,17 @@ services:
         container_name: mysql
         restart: always
         environment:
-            MYSQL_ROOT_PASSWORD: root
+            # MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} || Navithkumar2001@9
+            # MYSQL_DATABASE: ${USER_DB} || ecommerce
+            # MYSQL_USER: ${MYSQL_USER} || root
+            MYSQL_ROOT_PASSWORD: Navithkumar2001@9
+            MYSQL_DATABASE: ecommerce
         volumes:
             - mysql_data:/var/lib/mysql
         networks:
             - ecommerce
+        ports:
+            - '3307:3306'
 
     # ---------- CACHE ----------
     redis:
@@ -104,6 +109,8 @@ services:
         restart: always
         networks:
             - ecommerce
+        ports:
+            - '6379:6379'
 
     # ---------- MESSAGE QUEUE ----------
     rabbitmq:
