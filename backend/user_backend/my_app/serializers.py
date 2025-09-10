@@ -9,7 +9,6 @@ class AddressSerializer(serializers.ModelSerializer):
 
 
 class RegisterSerializer(serializers.ModelSerializer):
-    address = AddressSerializer()
 
     class Meta:
         model = User
@@ -18,15 +17,12 @@ class RegisterSerializer(serializers.ModelSerializer):
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
-        address_data = validated_data.pop('address')
-        address = Address.objects.create(**address_data)
 
         user = User.objects.create_user(
             username=validated_data['username'],
             email=validated_data['email'],
             phone_number=validated_data['phone_number'],
             role=validated_data['role'],
-            address=address,
             password=validated_data['password'],
         )
         return user

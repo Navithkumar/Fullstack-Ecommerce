@@ -2,9 +2,9 @@ from rest_framework.views import APIView
 from response import success_response,error_response
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
-from .serializers import RegisterSerializer, LoginSerializer
+from .serializers import AddressSerializer, RegisterSerializer, LoginSerializer
 from django.db import transaction
-from .models import User
+from .models import Address, User
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from pagination  import MyCustomPagination
@@ -89,3 +89,33 @@ class DeleteUserView(APIView):
               return success_response("User Deleted Successfully")
         except Exception as e:
             return error_response("User deletion Failed", str(e))
+        
+
+
+class UserAddressView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def post(self,request):
+        try:
+            with transaction.atomic():
+                serializer = AddressSerializer(data=request.data)
+                if serializer.is_valid():
+                    address = serializer.save()
+                    user = request.user
+                    user.address_id = address.id
+                    user.save(update_fields=["address_id"])
+                    return success_response("User Address Successfully Added")
+        except Exception as e:
+            return error_response("User Address failed to save ", str(e))
+
+class DeleteAddressView(APIView):
+    permission_classes = [IsAuthenticated]
+    def delete(self,request,id):
+        try:
+          with transaction.atomic():
+              data = get_object_or_404(Address,id=id)
+              data.delete()
+              return success_response("User Address Deleted Successfully")
+        except Exception as e:
+            return error_response("User Address deletion Failed", str(e))
+        
