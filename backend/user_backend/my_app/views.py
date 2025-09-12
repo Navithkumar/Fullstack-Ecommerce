@@ -118,4 +118,3 @@ class DeleteAddressView(APIView):
               return success_response("User Address Deleted Successfully")
         except Exception as e:
             return error_response("User Address deletion Failed", str(e))
-        
