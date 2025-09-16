@@ -17,5 +17,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy project
 COPY . .
+# Set Python path to include shared package
+ENV PYTHONPATH=/shared:$PYTHONPATH
 
 CMD ["gunicorn", "order_backend.wsgi:application", "--bind", "0.0.0.0:8000"]

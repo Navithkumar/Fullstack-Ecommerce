@@ -87,12 +87,12 @@ environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': env("USER_DB"),
-        'USER': env("MYSQL_USER", default="root"),
-        'PASSWORD': env("MYSQL_ROOT_PASSWORD"),
-        'HOST': env("MYSQL_HOST", default="mysql"),
-        'PORT': env.int("DB_PORT", default=3306),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'ecommerce',
+        'USER': env('POSTGRES_USER', default='postgres'),
+        'PASSWORD': env('POSTGRES_PASSWORD', default='password'),
+        'HOST': env('POSTGRES_HOST', default='localhost'),
+        'PORT': env.int('POSTGRES_PORT', default='5432'),
     }
 }
 
@@ -141,24 +141,25 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'rest_framework.permissions.IsAuthenticated',
-    # ],
+    "DEFAULT_PERMISSION_CLASSES": (
+        "rest_framework.permissions.IsAuthenticated",
+    ),
 }
 
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'ROTATE_REFRESH_TOKENS': True,
-    'BLACKLIST_AFTER_ROTATION': True,
-    'AUTH_HEADER_TYPES': ('Bearer',),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": env("JWT_SECRET_KEY"),
+    "AUTH_HEADER_TYPES": ("Bearer",),
 }
-
-AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
+AUTHENTICATION_BACKENDS = ["users.backend.EmailBackend"]
 AUTH_USER_MODEL = "my_app.User"
 
 MEDIA_URL = '/media/'

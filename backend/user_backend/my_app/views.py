@@ -11,6 +11,7 @@ from pagination  import MyCustomPagination
 from django.db.models import Q
 
 class RegisterView(APIView):
+    permission_classes = [] 
     def post(self, request):
         try:
             with transaction.atomic():
@@ -24,6 +25,7 @@ class RegisterView(APIView):
             return error_response("Error while registering", str(e), status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class LoginView(APIView):
+    permission_classes = [] 
     def post(self, request):
         try:
             serializer = LoginSerializer(data=request.data, context={'request': request})

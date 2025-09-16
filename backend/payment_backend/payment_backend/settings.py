@@ -78,12 +78,12 @@ environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': env("USER_DB"),
-        'USER': env("MYSQL_USER", default="root"),
-        'PASSWORD': env("MYSQL_ROOT_PASSWORD"),
-        'HOST': env("MYSQL_HOST", default="mysql"),
-        'PORT': env.int("DB_PORT", default=3306),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'ecommerce',
+        'USER': env('POSTGRES_USER', default='postgres'),
+        'PASSWORD': env('POSTGRES_PASSWORD', default='password'),
+        'HOST': env('POSTGRES_HOST', default='localhost'),
+        'PORT': env.int('POSTGRES_PORT', default='5432'),
     }
 }
 

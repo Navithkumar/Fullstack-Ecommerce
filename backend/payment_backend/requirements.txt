@@ -5,7 +5,7 @@ Django>=5.0,<6.0
 djangorestframework>=3.15.0
 
 # MySQL Database Connector
-mysqlclient>=2.2.4  # or use 'PyMySQL' if preferred
+psycopg2-binary  # or use 'PyMySQL' if preferred
 
 # Redis for caching & sessions
 django-redis>=5.4.0
