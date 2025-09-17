@@ -160,7 +160,7 @@ SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
 AUTHENTICATION_BACKENDS = ["users.backend.EmailBackend"]
-AUTH_USER_MODEL = "my_app.User"
+# AUTH_USER_MODEL = "my_app.User"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
