@@ -9,9 +9,9 @@ services:
 
     # ---------- USER SERVICE ----------
     user_backend:
-        build: ./backend/user_backend
+        build: ./backend/modules/user_backend
         volumes:
-            - ./backend/user_backend:/app
+            - ./backend/modules/user_backend:/app
             - ./shared:/shared
         container_name: user_backend
         command: python manage.py runserver 0.0.0.0:8000
@@ -31,11 +31,35 @@ services:
         networks:
             - ecommerce
 
+    # ---------- CATEGORY SERVICE ----------
+    category_backend:
+        build: ./backend/modules/category_backend
+        volumes:
+            - ./backend/modules/category_backend:/app
+            - ./shared:/shared
+        container_name: category_backend
+        command: python manage.py runserver 0.0.0.0:8000
+        env_file:
+            - .env
+        environment:
+            PYTHONPATH: '/shared'
+            POSTGRES_DB: ${USER_DB}
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_HOST: postgres
+            POSTGRES_PORT: 5432
+        depends_on:
+            - postgres
+            - redis
+            - rabbitmq
+        networks:
+            - ecommerce
+
     # ---------- PRODUCT SERVICE ----------
     product_backend:
-        build: ./backend/product_backend
+        build: ./backend/modules/product_backend
         volumes:
-            - ./backend/product_backend:/app
+            - ./backend/modules/product_backend:/app
             - ./shared:/shared
         container_name: product_backend
         command: python manage.py runserver 0.0.0.0:8000
@@ -57,9 +81,9 @@ services:
 
     # ---------- ORDER SERVICE ----------
     order_backend:
-        build: ./backend/order_backend
+        build: ./backend/modules/order_backend
         volumes:
-            - ./backend/order_backend:/app
+            - ./backend/modules/order_backend:/app
             - ./shared:/shared
         container_name: order_backend
         command: python manage.py runserver 0.0.0.0:8000
@@ -80,9 +104,9 @@ services:
 
     # ---------- PAYMENT SERVICE ----------
     payment_backend:
-        build: ./backend/payment_backend
+        build: ./backend/modules/payment_backend
         volumes:
-            - ./backend/payment_backend:/app
+            - ./backend/modules/payment_backend:/app
             - ./shared:/shared
         container_name: payment_backend
         command: python manage.py runserver 0.0.0.0:8000
@@ -103,9 +127,9 @@ services:
 
     # ---------- CART SERVICE ----------
     cart_backend:
-        build: ./backend/cart_backend
+        build: ./backend/modules/cart_backend
         volumes:
-            - ./backend/cart_backend:/app
+            - ./backend/modules/cart_backend:/app
             - ./shared:/shared
         container_name: cart_backend
         command: python manage.py runserver 0.0.0.0:8000
@@ -126,7 +150,7 @@ services:
 
     # ---------- DATABASE ----------
     postgres:
-        image: postgres:15
+        image: postgres:17
         container_name: postgres
         restart: always
         environment:
@@ -171,6 +195,7 @@ services:
         depends_on:
             - frontend
             - user_backend
+            - category_backend
             - product_backend
             - order_backend
             - payment_backend
@@ -183,4 +208,3 @@ networks:
 
 volumes:
     postgres_data:
-
