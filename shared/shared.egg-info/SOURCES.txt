@@ -1,0 +1,9 @@
+setup.py
+jwt_auth/__init__.py
+jwt_auth/jwt_auth.py
+jwt_auth/permission.py
+shared.egg-info/PKG-INFO
+shared.egg-info/SOURCES.txt
+shared.egg-info/dependency_links.txt
+shared.egg-info/requires.txt
+shared.egg-info/top_level.txt

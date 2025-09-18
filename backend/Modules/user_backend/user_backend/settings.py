@@ -142,9 +142,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ),
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "jwt_auth.jwt_auth.CommonJWTAuthentication",
+    ],
     "DEFAULT_PERMISSION_CLASSES": (
         "rest_framework.permissions.IsAuthenticated",
     ),
@@ -160,7 +160,7 @@ SIMPLE_JWT = {
     "SIGNING_KEY": env("JWT_SECRET_KEY"),
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
-AUTHENTICATION_BACKENDS = ["users.backend.EmailBackend"]
+AUTHENTICATION_BACKENDS =["authentication.backend.EmailBackend"]
 AUTH_USER_MODEL = "user_app.User"
 
 MEDIA_URL = '/media/'
