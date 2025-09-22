@@ -7,7 +7,7 @@ class Category(models.Model):
     slug = models.SlugField(max_length=120, unique=True, blank=True)
     category_image = models.FileField(upload_to='category_images/', blank=True, null=True)
     category_description = models.TextField(blank=True, null=True)
-    user_id = models.IntegerField()
+    user_id = models.IntegerField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

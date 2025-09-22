@@ -6,4 +6,4 @@ class CategoryAppConfig(AppConfig):
     name = 'category_app'
 
     def ready(self):
-        import category.signals
+        import category_app.signals

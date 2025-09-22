@@ -28,9 +28,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-8v@t$4dlg=yxu$voe+#ecs@k2l=jgnn)^xbzleu(86vw(u82o$'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "nginx", "user_backend"]
+ALLOWED_HOSTS = ["*"]
 
 
 
@@ -89,7 +89,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': env('USER_DB',default='ecommerce'),
+        'NAME': env('POSTGRES_DB',default='ecommerce'),
         'USER': env('POSTGRES_USER', default='postgres'),
         'PASSWORD': env('POSTGRES_PASSWORD', default='password'),
         'HOST': env('POSTGRES_HOST', default='postgres'),
@@ -166,12 +166,15 @@ AUTH_USER_MODEL = "user_app.User"
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
+varOcg = os.getenv("REDIS_URL", "redis://redis:6379/0")
+varFiltersCg = {
+    "BACKEND": "django_redis.cache.RedisCache",
+    "LOCATION": varOcg,
+    "OPTIONS": {
+        "CLIENT_CLASS": "django_redis.client.DefaultClient",
     }
+}
+
+CACHES = {
+    "default": varFiltersCg
 }
