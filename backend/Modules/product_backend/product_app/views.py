@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from pagination import MyCustomPagination
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from response import error_response,success_response
@@ -6,6 +6,7 @@ from rest_framework import status
 from django.db import transaction
 from .serializers import ProductsSerializer
 from rest_framework.exceptions import ValidationError
+from .services import get_products
 
 class CreateProductView(APIView):
   permission_classes = [IsAuthenticated]
@@ -26,3 +27,16 @@ class CreateProductView(APIView):
             )
     except Exception as e:
       return error_response("Error creating product",str(e),status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class ListProductView(APIView):
+  permission_classes = [IsAuthenticated]
+
+  def get(self,request):
+    try:
+      products = get_products()
+      pagination = MyCustomPagination()
+      data = pagination.paginate_queryset(products, request)
+      return pagination.get_paginated_response(data)
+
+    except Exception as e:
+      return error_response("Error Fetching product",str(e),status=status.HTTP_500_INTERNAL_SERVER_ERROR)
