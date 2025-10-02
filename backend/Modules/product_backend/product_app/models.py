@@ -17,7 +17,7 @@ class Products(models.Model):
 class ProductSpecification(models.Model):
     
     product = models.ForeignKey('Products',
-    on_delete=models.SET_NULL,null=True,
+    on_delete=models.CASCADE,null=True,
     blank=True,related_name='specifications')
 
     product_colour = models.CharField(max_length=100)
@@ -34,7 +34,7 @@ class ProductSpecification(models.Model):
 class ProductInventory(models.Model):
     
     product = models.ForeignKey('Products',
-    on_delete=models.SET_NULL,null=True,
+    on_delete=models.CASCADE,null=True,
     blank=True,related_name='inventory')
     product_stock_count = models.PositiveIntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
