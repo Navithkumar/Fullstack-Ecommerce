@@ -8,7 +8,7 @@ from rest_framework import status
 from django.db import transaction
 from .serializers import ProductsSerializer
 from rest_framework.exceptions import ValidationError
-from .services import get_products
+from .services import get_products,get_product_by_user
 from django.shortcuts import get_object_or_404
 
 class CreateProductView(APIView):
@@ -67,3 +67,19 @@ class DeleteProductView(APIView):
         return success_response("Product Deleted successfully",status=status.HTTP_201_CREATED)
       except Exception as e:
         return error_response("Error Deleting product",str(e),status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+      
+
+
+class ListProductByUserView(APIView):
+  permission_classes = [IsAuthenticated]
+
+  def get(self,request):
+    try:
+      user_id = request.user.id
+      products = get_product_by_user(user_id)
+      pagination = MyCustomPagination()
+      data = pagination.paginate_queryset(products, request)
+      return pagination.get_paginated_response(data)
+
+    except Exception as e:
+      return error_response("Error Fetching product",str(e),status=status.HTTP_500_INTERNAL_SERVER_ERROR)
