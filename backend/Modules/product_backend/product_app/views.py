@@ -1,4 +1,3 @@
-from functools import partial
 from .models import Products
 from pagination import MyCustomPagination
 from rest_framework.views import APIView
@@ -83,3 +82,14 @@ class ListProductByUserView(APIView):
 
     except Exception as e:
       return error_response("Error Fetching product",str(e),status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+class GetProductByIdApiView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self,request,id):
+      try:
+        product = get_object_or_404(Products, id=id)
+        serializer = ProductsSerializer(product)
+        return success_response("Product fetched successfully",serializer.data,status=status.HTTP_200_OK)
+      except Exception as e:
+        return error_response("Error fetch product",str(e),status=status.HTTP_500_INTERNAL_SERVER_ERROR)
