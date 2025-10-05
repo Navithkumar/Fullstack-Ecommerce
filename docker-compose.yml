@@ -8,12 +8,12 @@ services:
             - ecommerce
 
     # ---------- USER SERVICE ----------
-    user_backend:
-        build: ./backend/modules/user_backend
+    user-backend:
+        build: ./backend/modules/user-backend
         volumes:
-            - ./backend/modules/user_backend:/app
+            - ./backend/modules/user-backend:/app
             - ./shared:/shared
-        container_name: user_backend
+        container_name: user-backend
         command: python manage.py runserver 0.0.0.0:8000
         env_file:
             - .env
@@ -34,12 +34,12 @@ services:
             - ecommerce
 
     # ---------- CATEGORY SERVICE ----------
-    category_backend:
-        build: ./backend/modules/category_backend
+    category-backend:
+        build: ./backend/modules/category-backend
         volumes:
-            - ./backend/modules/category_backend:/app
+            - ./backend/modules/category-backend:/app
             - ./shared:/shared
-        container_name: category_backend
+        container_name: category-backend
         command: python manage.py runserver 0.0.0.0:8000
         env_file:
             - .env
@@ -60,12 +60,12 @@ services:
             - ecommerce
 
     # ---------- PRODUCT SERVICE ----------
-    product_backend:
-        build: ./backend/modules/product_backend
+    product-backend:
+        build: ./backend/modules/product-backend
         volumes:
-            - ./backend/modules/product_backend:/app
+            - ./backend/modules/product-backend:/app
             - ./shared:/shared
-        container_name: product_backend
+        container_name: product-backend
         command: python manage.py runserver 0.0.0.0:8000
         env_file:
             - .env
@@ -86,12 +86,12 @@ services:
             - ecommerce
 
     # ---------- ORDER SERVICE ----------
-    order_backend:
-        build: ./backend/modules/order_backend
+    order-backend:
+        build: ./backend/modules/order-backend
         volumes:
-            - ./backend/modules/order_backend:/app
+            - ./backend/modules/order-backend:/app
             - ./shared:/shared
-        container_name: order_backend
+        container_name: order-backend
         command: python manage.py runserver 0.0.0.0:8000
         env_file:
             - .env
@@ -112,12 +112,12 @@ services:
             - ecommerce
 
     # ---------- PAYMENT SERVICE ----------
-    payment_backend:
-        build: ./backend/modules/payment_backend
+    payment-backend:
+        build: ./backend/modules/payment-backend
         volumes:
-            - ./backend/modules/payment_backend:/app
+            - ./backend/modules/payment-backend:/app
             - ./shared:/shared
-        container_name: payment_backend
+        container_name: payment-backend
         command: python manage.py runserver 0.0.0.0:8000
         env_file:
             - .env
@@ -138,12 +138,12 @@ services:
             - ecommerce
 
     # ---------- CART SERVICE ----------
-    cart_backend:
-        build: ./backend/modules/cart_backend
+    cart-backend:
+        build: ./backend/modules/cart-backend
         volumes:
-            - ./backend/modules/cart_backend:/app
+            - ./backend/modules/cart-backend:/app
             - ./shared:/shared
-        container_name: cart_backend
+        container_name: cart-backend
         command: python manage.py runserver 0.0.0.0:8000
         env_file:
             - .env
@@ -237,12 +237,12 @@ services:
             - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
         depends_on:
             - frontend
-            - user_backend
-            - category_backend
-            - product_backend
-            - order_backend
-            - payment_backend
-            - cart_backend
+            - user-backend
+            - category-backend
+            - product-backend
+            - order-backend
+            - payment-backend
+            - cart-backend
         networks:
             - ecommerce
 
