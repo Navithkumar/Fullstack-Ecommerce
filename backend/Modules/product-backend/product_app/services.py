@@ -1,4 +1,3 @@
-from urllib import request
 import redis
 import json
 from .models import Products

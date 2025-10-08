@@ -11,6 +11,7 @@ from django.shortcuts import get_object_or_404
 import requests
 import os
 from django.conf import settings 
+from .services import get_cart_items,clear_cache
 
 class CartApiView(APIView):
     permission_classes = [IsAuthenticated]
@@ -37,21 +38,49 @@ class CartApiView(APIView):
 
         total_price = float(price) * int(quantity)
         try:
-            cart_item, created = Cart.objects.update_or_create(
-                user_id=user_id,
-                product_id=product_id,
-                defaults={'quantity': quantity, 'cart_price': total_price}
-            )
+            cart_item = Cart.objects.filter(user_id=user_id, product_id=product_id).first()
+
+            if cart_item:
+                new_quantity = cart_item.quantity + quantity
+                total_price = price * new_quantity
+                cart_item.quantity = new_quantity
+                cart_item.cart_price = total_price
+                cart_item.save()
+                created = False
+            else:
+                total_price = price * quantity
+                cart_item = Cart.objects.create(
+                    user_id=user_id,
+                    product_id=product_id,
+                    quantity=quantity,
+                    cart_price=total_price
+                )
+                created = True
+            
+            clear_cache(user_id)
 
             serializer = CartSerializer(cart_item)
-            return success_response(
-                "Cart created successfully",
-                serializer.data,
+            message = "Cart created successfully" if created else "Cart updated successfully"
+            return success_response(message, serializer.data, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            return error_response(
+                "Failed to create cart",
+                str(e),
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+        
+    def get(self,request):
+        try:
+          user_id = request.user.id
+          data = get_cart_items(user_id)
+          return success_response(
+                "Cart Fetched successfully",
+                data,
                 status=status.HTTP_201_CREATED
             )
         except Exception as e:
             return error_response(
-                "Failed to create cart",
+                "Failed to get cart",
                 str(e),
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
