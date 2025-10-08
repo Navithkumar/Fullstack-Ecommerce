@@ -22,7 +22,7 @@ class CartApiView(APIView):
         quantity = request.data.get('quantity', 1)
 
         try:
-            url = f"{HOSTNAME.rstrip('/')}/api/products/get-product/{product_id}/"
+            url = f"{HOSTNAME.rstrip('/')}/get-product/{product_id}/"
             headers = {"Authorization": request.headers.get("Authorization")}
             response = requests.get(url, headers=headers,timeout=5)
             if response.status_code == 200:
