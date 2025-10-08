@@ -16,18 +16,18 @@ class CartApiView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        HOSTNAME = os.environ.get("PRODUCT_SERVICE_URL", "http://product_backend:8000")
+        HOSTNAME = os.environ.get("PRODUCT_SERVICE_URL", "http://product-backend:8000")
         user_id = request.user.id
         product_id = request.data.get('product_id')
         quantity = request.data.get('quantity', 1)
 
         try:
             url = f"{HOSTNAME.rstrip('/')}/api/products/get-product/{product_id}/"
-            print(url)
-            response = requests.get(url, timeout=5)
+            headers = {"Authorization": request.headers.get("Authorization")}
+            response = requests.get(url, headers=headers,timeout=5)
             if response.status_code == 200:
                 product_data = response.json()
-                price = product_data.get('price', 0)
+                price = float(product_data.get('data', {}).get('product_price', 0))
             else:
                 print(f"Product API error {response.status_code}: {response.text}")
                 price = 0

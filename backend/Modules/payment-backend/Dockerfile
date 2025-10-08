@@ -22,4 +22,4 @@ COPY . .
 ENV PYTHONPATH=/shared:$PYTHONPATH
 
 # Default command -> Production ready (Gunicorn)
-CMD ["gunicorn", "user_backend.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["gunicorn", "user-backend.wsgi:application", "--bind", "0.0.0.0:8000"]

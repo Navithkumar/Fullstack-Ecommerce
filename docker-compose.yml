@@ -86,12 +86,12 @@ services:
             - ecommerce
 
     # ---------- ORDER SERVICE ----------
-    order-backend:
-        build: ./backend/modules/order-backend
+    orders-backend:
+        build: ./backend/modules/orders-backend
         volumes:
-            - ./backend/modules/order-backend:/app
+            - ./backend/modules/orders-backend:/app
             - ./shared:/shared
-        container_name: order-backend
+        container_name: orders-backend
         command: python manage.py runserver 0.0.0.0:8000
         env_file:
             - .env
@@ -240,7 +240,7 @@ services:
             - user-backend
             - category-backend
             - product-backend
-            - order-backend
+            - orders-backend
             - payment-backend
             - cart-backend
         networks:

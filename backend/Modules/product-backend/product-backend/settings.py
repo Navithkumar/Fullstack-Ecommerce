@@ -29,7 +29,8 @@ SECRET_KEY = 'django-insecure-lducu35di***1xzcp+n9b(e%35eqh4ep_-%@@_02(8oiuqk2=d
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*','product-backend']
+ALLOWED_HOSTS = ["*", "localhost", "127.0.0.1", "nginx", "user-backend", "product-backend", "category-backend", "order-backend", "cart-backend", "payment-backend"]
+
 
 
 # Application definition
