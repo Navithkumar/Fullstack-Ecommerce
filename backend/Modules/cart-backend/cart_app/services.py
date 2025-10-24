@@ -3,6 +3,7 @@ import json
 from .models import Cart
 from .serializers import CartSerializer
 from django.conf import settings
+from pagination import MyCustomPagination
 
 # Connect Redis (preferably from env vars)
 r = redis.Redis(
@@ -23,7 +24,7 @@ def get_cart_items(user_id):
             print(f"Redis HIT for {cache_key}")
             return json.loads(cached)
     except redis.RedisError as e:
-        print(f"⚠️ Redis GET failed: {e}")
+        print(f"Redis GET failed: {e}")
 
     # Fallback: Fetch from DB
     try:

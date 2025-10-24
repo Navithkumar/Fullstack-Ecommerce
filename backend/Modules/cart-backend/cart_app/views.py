@@ -13,6 +13,7 @@ import os
 from django.conf import settings 
 from .services import get_cart_items,clear_cache
 
+
 class CartApiView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -68,19 +69,35 @@ class CartApiView(APIView):
                 str(e),
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-        
+          
     def get(self,request):
         try:
           user_id = request.user.id
           data = get_cart_items(user_id)
-          return success_response(
-                "Cart Fetched successfully",
-                data,
-                status=status.HTTP_201_CREATED
-            )
+          pagination = MyCustomPagination()
+          data = pagination.paginate_queryset(data, request)
+          return pagination.get_paginated_response(data)
         except Exception as e:
             return error_response(
                 "Failed to get cart",
                 str(e),
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+    
+    def delete(self, request, cart_id, product_id):
+      try:
+          with transaction.atomic():
+              cart_item = get_object_or_404(Cart, cart_id=cart_id, product_id=product_id)
+              cart_item.delete()
+
+              return success_response(
+                  "Product removed from cart successfully",
+                  status=status.HTTP_200_OK
+              )
+
+      except Exception as e:
+          return error_response(
+              "Failed to remove product from cart",
+              str(e),
+              status=status.HTTP_500_INTERNAL_SERVER_ERROR
+          )
